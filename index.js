@@ -1,10 +1,17 @@
-function coinChange(coins, amount) {
-  const dp = new Array(amount + 1).fill(amount + 1);
-  dp[0] = 0;
-  for (const coin of coins) {
-    for (let i = coin; i <= amount; i++) {
-      dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+function allPathsSourceTarget(graph) {
+  const result = [];
+  const target = graph.length - 1;
+  dfs(graph, 0, [0]);
+  function dfs(graph, node, path) {
+    if (node === target) {
+      result.push([...path]);
+      return;
+    }
+    for (const neighbor of graph[node]) {
+      path.push(neighbor);
+      dfs(graph, neighbor, path);
+      path.pop();
     }
   }
-  return dp[amount] > amount ? -1 : dp[amount];
+  return result;
 }
